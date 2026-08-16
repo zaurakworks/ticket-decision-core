@@ -4,3 +4,4 @@
 *.go text eol=lf
 *.json text eol=lf
 *.mod text eol=lf
+*.md text eol=lf
