@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ticket-decision-core.local/schemas/input.schema.json",
+  "title": "Ticket decision input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "facts"],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "facts": {"type": "object"}
+  }
+}

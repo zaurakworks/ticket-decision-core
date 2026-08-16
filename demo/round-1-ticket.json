@@ -1,0 +1,13 @@
+{
+  "run_id": "ticket-9001/revision-1",
+  "facts": {
+    "ticket": {
+      "request_id": "req-7f91",
+      "order_id": "order-2048",
+      "window": {
+        "from": "2026-08-16T08:00:00Z",
+        "to": "2026-08-16T08:15:00Z"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "run_id": "ticket-9001/revision-2",
+  "facts": {
+    "ticket": {
+      "request_id": "req-7f91",
+      "order_id": "order-2048",
+      "window": {
+        "from": "2026-08-16T08:00:00Z",
+        "to": "2026-08-16T08:15:00Z"
+      }
+    },
+    "evidence": {
+      "logs": {
+        "error_count": 12,
+        "last_error": "worker lease expired"
+      },
+      "api": {
+        "order_status": "stuck"
+      },
+      "database": {
+        "pending_jobs": 1
+      }
+    }
+  }
+}

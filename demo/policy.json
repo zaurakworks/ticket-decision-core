@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "id": "order-recovery",
+  "version": "2026-08-16.1",
+  "collectors": [
+    {
+      "id": "order-error-logs",
+      "kind": "log",
+      "provides": ["evidence.logs.error_count", "evidence.logs.last_error"],
+      "instruction": "logs.search-order-errors",
+      "parameters": {
+        "request_id": "ticket.request_id",
+        "from": "ticket.window.from",
+        "to": "ticket.window.to"
+      }
+    },
+    {
+      "id": "order-status-api",
+      "kind": "api",
+      "provides": ["evidence.api.order_status"],
+      "instruction": "api.get-order-status",
+      "parameters": {
+        "order_id": "ticket.order_id"
+      }
+    },
+    {
+      "id": "pending-jobs-database",
+      "kind": "database",
+      "provides": ["evidence.database.pending_jobs"],
+      "instruction": "database.count-pending-order-jobs",
+      "parameters": {
+        "order_id": "ticket.order_id"
+      }
+    }
+  ],
+  "rules": [
+    {
+      "id": "retry-stuck-order",
+      "priority": 200,
+      "when": {
+        "all": [
+          {"fact": "evidence.logs.error_count", "operator": "gte", "value": 5},
+          {"fact": "evidence.api.order_status", "operator": "eq", "value": "stuck"},
+          {"fact": "evidence.database.pending_jobs", "operator": "gt", "value": 0}
+        ]
+      },
+      "then": {
+        "outcome": "actionable",
+        "reason_code": "stuck_order_has_pending_job",
+        "directive": {
+          "handler": "retry_order_pipeline"
+        }
+      }
+    },
+    {
+      "id": "order-already-complete",
+      "priority": 100,
+      "when": {
+        "all": [
+          {"fact": "evidence.logs.error_count", "operator": "eq", "value": 0},
+          {"fact": "evidence.api.order_status", "operator": "eq", "value": "complete"},
+          {"fact": "evidence.database.pending_jobs", "operator": "eq", "value": 0}
+        ]
+      },
+      "then": {
+        "outcome": "already_satisfied",
+        "reason_code": "order_is_complete",
+        "directive": {
+          "handler": "comment_no_action_required"
+        }
+      }
+    }
+  ]
+}

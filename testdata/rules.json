@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "ticket-routing",
+  "version": "2026-08-16.1",
+  "rules": [
+    {
+      "id": "deny-high-risk-access",
+      "priority": 200,
+      "when": {
+        "all": [
+          {"fact": "ticket.type", "operator": "eq", "value": "account_access"},
+          {"fact": "ticket.risk", "operator": "eq", "value": "high"}
+        ]
+      },
+      "then": {
+        "outcome": "policy_denied",
+        "reason_code": "high_risk_requires_approval",
+        "directive": {"handler": "request_security_approval"}
+      }
+    },
+    {
+      "id": "grant-standard-access",
+      "priority": 100,
+      "when": {
+        "all": [
+          {"fact": "ticket.type", "operator": "eq", "value": "account_access"},
+          {"fact": "requester.active", "operator": "eq", "value": true},
+          {"fact": "ticket.requested_role", "operator": "in", "value": ["reader", "reporter"]}
+        ]
+      },
+      "then": {
+        "outcome": "actionable",
+        "reason_code": "standard_access_allowed",
+        "directive": {"handler": "grant_standard_access"}
+      }
+    }
+  ]
+}

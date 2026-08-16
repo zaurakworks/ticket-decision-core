@@ -1,0 +1,8 @@
+{
+  "run_id": "ticket-125/revision-1",
+  "facts": {
+    "ticket": {
+      "type": "hardware_repair"
+    }
+  }
+}

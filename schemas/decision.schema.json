@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ticket-decision-core.local/schemas/decision.schema.json",
+  "title": "Ticket decision output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "ruleset_id", "ruleset_version", "outcome", "reason_code"],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "ruleset_id": {"type": "string", "minLength": 1},
+    "ruleset_version": {"type": "string", "minLength": 1},
+    "outcome": {
+      "enum": ["actionable", "need_more_info", "no_match", "ambiguous", "policy_denied", "already_satisfied", "manual_review"]
+    },
+    "reason_code": {"type": "string", "minLength": 1},
+    "matched_rule_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "missing_facts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "collection_requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["collector_id", "kind", "instruction", "produces"],
+        "properties": {
+          "collector_id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["log", "api", "database"]},
+          "instruction": {"type": "string", "minLength": 1},
+          "parameters": {"type": "object"},
+          "produces": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "unresolved_facts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "directive": true
+  }
+}

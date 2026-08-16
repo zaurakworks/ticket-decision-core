@@ -1,0 +1,13 @@
+{
+  "run_id": "ticket-123/revision-4",
+  "facts": {
+    "ticket": {
+      "type": "account_access",
+      "risk": "low",
+      "requested_role": "reader"
+    },
+    "requester": {
+      "active": true
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "run_id": "ticket-124/revision-1",
+  "facts": {
+    "ticket": {
+      "type": "account_access",
+      "requested_role": "reader"
+    }
+  }
+}
